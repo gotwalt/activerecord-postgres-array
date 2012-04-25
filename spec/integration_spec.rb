@@ -11,6 +11,14 @@ describe Article do
       article.author_ids.should == [1,2,3]
       article.amounts.should == [15.to_d] * 3
     end
+    
+    it 'should detect changes to an array' do
+      article = Article.create
+      article = Article.create(:languages => ["English", "German"])
+      article.reload
+      article.languages << "French"
+      article.should be_languages_changed
+    end
 
     it "escapes single quotes correctly" do
       article = Article.create(:languages => ["English", "Ger'man"])
